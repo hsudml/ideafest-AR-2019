@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ideaFest 2019 AR 3D Model Showcase</title>
+    <meta name="description" content="Simple setup for showing a 3D model.">
+    <meta name="apple-mobile-web-app-capable">
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-star-system-component@1.0.0/index.js"></script>
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="script.js"></script>
+    <script src="href.js"></script>
+    <script src="hammer.js"></script>
+    <script src="play-all-model-animations.js"></script>
+    <!-- let's add the animation and orbit controls components -->
+    <script src="https://unpkg.com/aframe-animation-component@^5.1.2/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-orbit-controls@1.2.0/dist/aframe-orbit-controls.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <a-scene embedded arjs="sourceType: webcam;" vr-mode-ui="enabled: true;">
+
+      <!-- This is a "mixin" we can apply to planets to make them rotate-->
+      <a-mixin id="rotation" animation="property: rotation; loop: true; from:  0 0 0; to: 0 360 0; dur: 20000; easing: linear;"></a-mixin>
+
+      <!-- here is a "mixin" that we can apply to a container to make the planet inside it orbit -->
+      <a-mixin id="orbit" animation="property: rotation; loop: true; to: 0 360 0; dur: 40000; easing: linear;"></a-mixin>
+      
+      <!-- LOAD YOUR ASSETS -->
+      <a-assets>
+        <a-asset-item id="stone" src="https://cdn.glitch.com/62f3336c-9f2d-427c-9349-78298c8c234a%2Fstone2.glb"></a-asset-item>
+        <a-asset-item id="skull" src="https://cdn.glitch.com/0ae7c4b7-5db9-4f27-afb4-bd5dfe927d3c%2Fscene.gltf"></a-asset-item>
+        <a-asset-item id="hand" src="https://cdn.glitch.com/c0afc74f-894d-4e7b-9d1a-20b1bd705cb7%2Fhand.glb"></a-asset-item>
+        
+        <img id="sun-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2F1024px-Map_of_the_full_sun.jpg?1540859304920"
+            crossorigin="anonymous">
+        <img id="mercury-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fmercurymap.jpg?1541102122291"
+            crossorigin="anonymous">
+        <img id="venus-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fvenusmap.jpg?1541102155907"
+            crossorigin="anonymous">
+        <img id="earth-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fearthmap1k.jpg?1541102064615"
+            crossorigin="anonymous">
+        <img id="mars-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fmars_1k_color.jpg?1541102234577"
+            crossorigin="anonymous">
+        <img id="jupiter-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fjupitermap.jpg?1541101634813"
+            crossorigin="anonymous">
+        <img id="saturn-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fsaturnmap.jpg?1541102148468"
+            crossorigin="anonymous">
+        <img id="uranus-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Furanusmap.jpg?1541102150185"
+            crossorigin="anonymous">
+        <img id="neptune-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fneptunemap.jpg?1541102137305"
+            crossorigin="anonymous">
+        <img id="pluto-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fplutomap1k.jpg?1541102145905"
+            crossorigin="anonymous">
+        <img id="moon-texture" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2FMoonmap_from_clementine_data.png?1541102132708"
+            crossorigin="anonymous">
+        <a-asset-item id="asteroids" response-type="arraybuffer" src="https://cdn.glitch.com/d558c128-2ed0-4284-a0da-4d18b9163ad6%2Fasteroides.glb?1541106805090"></a-asset-item>
+      </a-assets>
+      
+      <!-- Give some basic lighting here. Ambient lighting lights the
+      whole scene and makes sure we can still see our rings. -->
+      <a-entity id="basic-light" light="type: ambient; color: #BBB"></a-entity>
+      
+     
+      
+      
+      <a-marker type="pattern" url="https://cdn.glitch.com/c3ad0a0f-3e2f-4c85-ad9b-78b04bb6c512%2Fpattern-marker%20(1).patt">
+      
+        <a-entity gltf-model="#stone" 
+                  position="0 0 0" 
+                  scale="0.005 0.005 0.005" 
+                  rotation="0 0 0" 
+                  animation-mixer
+                  play-all-model-animations
+                  modify-materials>
+        </a-entity>
+        <a-entity geometry="primitive: plane; width: 4; height: auto"
+                  material="opacity: 0; sides: double;"
+                  position="0 0.25 1"
+                  text="value: Breaking Stone by Ron Homer; align: center; color: #f955aa;"></a-entity>
+      <a-light type="point" position="0 2 4" color="#666"></a-light>
+        
+      </a-marker>
+      
+      <a-marker preset="hiro">
+        <a-gltf-model src="#hand" 
+                      position="0 1 0" 
+                      rotation="0 0 0" 
+                      scale="0.08 0.08 0.08" 
+                      animation-mixer="clip: Take 001; loop: repeat;"
+                      play-all-model-animations
+                      modify-materials> </a-gltf-model>
+      <a-light type="point" position="0 2 4" color="#666"></a-light>
+          <a-entity
+            geometry="primitive: plane; width: 1; height: auto"
+            material="color: #000"
+            rotation="-45 0 0"
+            position="0 0.25 1"
+            text="value: Visible Interactive Human - Exploding skull \n WitmerLab at Ohio University (https://sketchfab.com/witmerlab) \n CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)"></a-entity>
+        
+      </a-marker>
+
+      <!-- add a simple camera -->
+      <a-entity camera></a-entity>
+    </a-scene>
+    <script src="https://button.glitch.me/button.js"></script>
+  </body>
+</html>
